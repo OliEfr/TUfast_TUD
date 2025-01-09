@@ -1,3 +1,4 @@
+@use 'sass:color';
 $clr-blue-dark: rgba(11, 42, 81);
 $clr-blue-light: rgba(0, 86, 127);
 $clr-green: rgba(56, 199, 158);
@@ -49,7 +50,7 @@ $clr-grey: rgba(231, 220, 220);
 		color: white;
 		}
 		.module td {
-			background-color: lighten($clr-blue-light, 10%);
+			background-color: color.adjust($clr-blue-light, $lightness: 10%);
 			color: white;
 		}
 		.exam td {
