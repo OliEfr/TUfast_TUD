@@ -201,6 +201,7 @@ async function createCreditsBanner() {
   const credits = document.createElement('p')
 
   credits.style.margin = 'auto'
+  credits.style.marginLeft = '10px'
   credits.style.marginRight = '0'
   credits.style.color = '#002557' // Selma theme color
   credits.id = 'TUfastCredits'
@@ -237,23 +238,24 @@ async function createCreditsBanner() {
   return credits
 }
 
+// Apply all custom changes once documentd loaded
 ;(async () => {
-  const { improveSelma } = await chrome.storage.local.get(['improveSelma'])
-
-  // Apply all custom changes
-  document.addEventListener('DOMContentLoaded', async () => {
-    // Add Credit banner with toggle button
-    const creditElm = await createCreditsBanner()
-    document.querySelector('.semesterChoice')!.appendChild(creditElm)
-
-    if (!improveSelma) return
-
-    eventListener()
-  })
+  if (document.readyState !== 'loading') {
+    await eventListener()
+  } else {
+    document.addEventListener('DOMContentLoaded', eventListener)
+  }
 })()
 
 async function eventListener() {
   document.removeEventListener('DOMContentLoaded', eventListener)
+
+  // Add Credit banner with toggle button
+  const creditElm = await createCreditsBanner()
+  document.querySelector('.semesterChoice')!.appendChild(creditElm)
+
+  const { improveSelma } = await chrome.storage.local.get(['improveSelma'])
+  if (!improveSelma) return
 
   // Inject css
   injectCSS('base')
